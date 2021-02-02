@@ -1,0 +1,40 @@
+#lottery-number {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+#start-button {
+    display: block;
+    width: 200px;
+    height: 40px;
+    margin: 0 auto 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#results {
+    width: 700px;
+    margin: 0 auto;
+}
+
+#results > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.column {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    background-color: lightgray;
+}
+
+.column.hit {
+    background-color: lightsalmon;
+}
