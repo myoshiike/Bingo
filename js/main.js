@@ -1,61 +1,67 @@
 'use strict';
 
-const lotteryNumber = document.getElementById('lottery-number');
-const startButton = document.getElementById('start-button');
-const results = document.getElementById('results');
+{    
+    const currentNumber = document.getElementById('current-number');
+    const startButton = document.getElementById('start-button');
+    const result = document.getElementById('result');
 
-const fragment = document.createDocumentFragment();
-let row;
-
-for (let i = 1, len = 75; i <= len; i++) {
-    if (i % 15 === 1) {
-        row = document.createElement('div');
-        row.classList.add('row');
-    }
+    const from = 1;
+    const to = 75;
+    const lotteryNumbers = [];
     
-    const column = document.createElement('div');
-    column.textContent = i;
-    column.classList.add('column');
-
-    row.appendChild(column);
-
-    if (i % 15 === 0) {
-        fragment.appendChild(row);
-    }
-}
-
-results.appendChild(fragment);
-
-const arr = [];
-for (let j = 1, len2 = 75; j <= len2; j++) {
-    arr.push(j);
-}
-
-startButton.addEventListener('click', () => {
-    const randomNumber = Math.floor(Math.random() * arr.length);
-    const atari = arr.splice(randomNumber, 1);
-
-    if (arr.length === 0) {
-        startButton.textContent = 'Reset';
-    }
-
-    if (atari.length === 0) {
-        lotteryNumber.textContent = '?';
+    const resetLotteryNumbers = nums => {
+        for (let i = from; i <= to; i++) {
+            nums.push(i);
+        }
+    };
+    resetLotteryNumbers(lotteryNumbers);
+    
+    const fragment = document.createDocumentFragment();
+    let row;
+    
+    lotteryNumbers.forEach((num, index) => {
+        if (index % 15 === 0) {
+            row = fragment.appendChild(document.createElement('div'));
+            row.classList.add('row');
+        }
+        
+        const column = document.createElement('div');
+        column.textContent = num;
+        column.classList.add('column');
+    
+        row.appendChild(column);
+    });
+    
+    result.appendChild(fragment);
+    
+    const resetBingo = () => {
+        currentNumber.textContent = '?';
         startButton.textContent = 'Go!!';
-        const hits = results.getElementsByClassName('column');
-        Array.prototype.forEach.call(hits, hit => {
+    
+        const hits = result.querySelectorAll('.hit');
+        hits.forEach(hit => {
             hit.classList.remove('hit');
         });
-
-        for (let j = 1, len2 = 75; j <= len2; j++) {
-            arr.push(j);
+    
+        resetLotteryNumbers(lotteryNumbers);
+    };
+    
+    startButton.addEventListener('click', () => {
+        const randomNumber = Math.floor(Math.random() * lotteryNumbers.length);
+        const winningNumber = lotteryNumbers.splice(randomNumber, 1);
+    
+        if (lotteryNumbers.length === 0) {
+            startButton.textContent = 'Reset';
         }
-
-        return;
-    }
-
-    lotteryNumber.textContent = atari[0];
-
-    const resultsChild = results.getElementsByClassName('column');
-    resultsChild[atari[0] - 1].classList.add('hit');
-});
+    
+        if (winningNumber.length === 0) {
+            resetBingo();
+            return;
+        }
+    
+        currentNumber.textContent = winningNumber[0];
+    
+        const columns = result.querySelectorAll('.column');
+        columns[winningNumber[0] - 1].classList.add('hit');
+    });
+}

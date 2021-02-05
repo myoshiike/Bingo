@@ -1,4 +1,4 @@
-#lottery-number {
+#current-number {
     text-align: center;
     margin: 10px 0;
     font-size: 48px;
@@ -14,7 +14,7 @@
     font-weight: bold;
 }
 
-#results {
+#result {
     width: 700px;
     margin: 0 auto;
 }
